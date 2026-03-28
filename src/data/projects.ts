@@ -46,4 +46,19 @@ export const projects: Project[] = [
     tech: ['Next.js', 'Vercel', 'Auth', 'CI/CD'],
     image: 'https://ibt-seven.vercel.app/og-image.png',
   },
+  {
+    id: 'al-crm',
+    title: 'AL Recruitment CRM',
+    description: {
+      he: 'מערכת CRM לניהול מועמדים ושיווק בדוא"ל עבור חברת השמה. כוללת קבלת לידים אוטומטית, ניהול קמפיינים ומשלוח מיילים מותאמים אישית.',
+      en: 'Candidate management CRM and email marketing platform for a recruitment agency. Features automatic lead capture, campaign management, and personalized bulk email delivery.',
+    },
+    xray: {
+      he: 'אינטגרציה עם Elementor Webhooks לקליטת לידים אוטומטית, חיבור ל-Smoove API לשיווק במייל, עורך HTML מבוסס TipTap, ו-MongoDB Atlas לניהול נתונים.',
+      en: 'Integration with Elementor Webhooks for automatic lead capture, Smoove API for email marketing, TipTap-based HTML editor, and MongoDB Atlas for data management.',
+    },
+    url: '',
+    tech: ['Next.js', 'TypeScript', 'MongoDB', 'Smoove API', 'TipTap'],
+    image: '',
+  },
 ];

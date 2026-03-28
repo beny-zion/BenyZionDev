@@ -26,18 +26,20 @@ export default function ProjectCard({ project }: { project: Project }) {
                 <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">{project.title}</h3>
                 <div className="flex items-center gap-1.5 md:gap-2">
                   {/* Eye icon for preview */}
-                  <button
-                    className="relative p-1.5 text-gray-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
-                    onMouseEnter={() => setShowPreview(true)}
-                    onMouseLeave={() => setShowPreview(false)}
-                    onClick={(e) => { e.stopPropagation(); setShowPreview(!showPreview); }}
-                    title="Preview"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  </button>
+                  {project.image && (
+                    <button
+                      className="relative p-1.5 text-gray-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
+                      onMouseEnter={() => setShowPreview(true)}
+                      onMouseLeave={() => setShowPreview(false)}
+                      onClick={(e) => { e.stopPropagation(); setShowPreview(!showPreview); }}
+                      title="Preview"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    </button>
+                  )}
                   <span className="text-xs font-mono px-1.5 md:px-2 py-0.5 md:py-1 bg-gray-100 dark:bg-gray-700 rounded text-gray-500 dark:text-gray-400">UI</span>
                 </div>
               </div>
@@ -51,15 +53,21 @@ export default function ProjectCard({ project }: { project: Project }) {
               </div>
             </div>
             <div className="flex items-center justify-between mt-2 md:mt-3">
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium py-1"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {t.projects.viewSite} →
-              </a>
+              {project.url ? (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium py-1"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {t.projects.viewSite} →
+                </a>
+              ) : (
+                <span className="text-sm text-gray-400 dark:text-gray-500 font-mono py-1">
+                  {language === 'he' ? 'מערכת פרטית' : 'Private System'}
+                </span>
+              )}
               <button className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 font-mono py-1">
                 [{t.projects.xrayToggle}]
               </button>
@@ -81,15 +89,21 @@ export default function ProjectCard({ project }: { project: Project }) {
             </div>
           </div>
           <div className="flex items-center justify-between mt-3 md:mt-4">
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs md:text-sm text-emerald-400 hover:text-emerald-300 font-mono py-1"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {project.url.replace('https://', '')} →
-            </a>
+            {project.url ? (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs md:text-sm text-emerald-400 hover:text-emerald-300 font-mono py-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {project.url.replace('https://', '')} →
+              </a>
+            ) : (
+              <span className="text-xs md:text-sm text-gray-500 font-mono py-1">
+                // private deployment
+              </span>
+            )}
             <button className="text-xs text-gray-500 hover:text-gray-300 font-mono py-1">
               [flip back]
             </button>
@@ -98,7 +112,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       </div>
 
       {/* Floating Preview Popup */}
-      <div
+      {project.image && <div
         className={`absolute z-30 bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 sm:w-72 transition-all duration-200 ${
           showPreview ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
         }`}
@@ -122,7 +136,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         <div className="flex justify-center">
           <div className="w-3 h-3 bg-white dark:bg-gray-800 border-r border-b border-gray-200 dark:border-gray-600 rotate-45 -mt-1.5" />
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
