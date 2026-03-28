@@ -17,6 +17,9 @@ export default function Header() {
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    if (id === 'contact') {
+      window.dispatchEvent(new Event('contact-post'));
+    }
     setMenuOpen(false);
   };
 

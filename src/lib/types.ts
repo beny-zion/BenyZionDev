@@ -49,6 +49,9 @@ export interface Translations {
     postCommand: string;
     action: string;
     namePlaceholder: string;
+    emailPlaceholder: string;
+    phonePlaceholder: string;
+    optional: string;
     messagePlaceholder: string;
     send: string;
   };

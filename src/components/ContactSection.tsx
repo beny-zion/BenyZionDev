@@ -1,15 +1,22 @@
 'use client';
 
 import { useApp } from '@/context/AppContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ContactSection() {
   const { t, isRTL } = useApp();
   const [activeTab, setActiveTab] = useState<'get' | 'post'>('get');
+
+  useEffect(() => {
+    const handler = () => setActiveTab('post');
+    window.addEventListener('contact-post', handler);
+    return () => window.removeEventListener('contact-post', handler);
+  }, []);
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
-
   const [sending, setSending] = useState(false);
 
   const handleSend = async () => {
@@ -22,14 +29,18 @@ export default function ContactSection() {
         body: JSON.stringify({
           access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
           name,
+          ...(email && { email }),
+          ...(phone && { phone }),
           message,
-          from_email: 'portfolio-contact@beny-zion.dev',
+          from_email: email || 'portfolio-contact@beny-zion.dev',
           subject: `Portfolio Contact from ${name}`,
         }),
       });
       if (res.ok) {
         setSent(true);
         setName('');
+        setEmail('');
+        setPhone('');
         setMessage('');
         setTimeout(() => setSent(false), 3000);
       }
@@ -106,8 +117,14 @@ export default function ContactSection() {
                     &quot;github.com/beny-zion&quot;
                   </a>
                   {',\n'}
-                  {'  "action": "' + t.contact.action + '"\n'}
-                  {'}'}
+                  {'  "action": '}
+                  <button
+                    onClick={() => setActiveTab('post')}
+                    className="underline hover:text-emerald-200 text-emerald-300 cursor-pointer"
+                  >
+                    &quot;{t.contact.action}&quot;
+                  </button>
+                  {'\n}'}
                 </pre>
               </>
             ) : (
@@ -125,6 +142,27 @@ export default function ContactSection() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder={t.contact.namePlaceholder}
                       className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2.5 md:py-2 text-sm md:text-base text-white placeholder-gray-600 focus:border-emerald-500 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-400 text-xs mb-1 block">&quot;email&quot;: <span className="text-gray-600">({t.contact.optional})</span></label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={t.contact.emailPlaceholder}
+                      className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2.5 md:py-2 text-sm md:text-base text-white placeholder-gray-600 focus:border-emerald-500 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-400 text-xs mb-1 block">&quot;phone&quot;: <span className="text-gray-600">({t.contact.optional})</span></label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder={t.contact.phonePlaceholder}
+                      className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2.5 md:py-2 text-sm md:text-base text-white placeholder-gray-600 focus:border-emerald-500 focus:outline-none"
+                      dir="ltr"
                     />
                   </div>
                   <div>
