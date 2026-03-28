@@ -59,6 +59,6 @@ export const projects: Project[] = [
     },
     url: '',
     tech: ['Next.js', 'TypeScript', 'MongoDB', 'Smoove API', 'TipTap'],
-    image: '',
+    image: '/al-crm-preview.png',
   },
 ];
