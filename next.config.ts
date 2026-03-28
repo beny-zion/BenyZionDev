@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
             "style-src 'self' 'unsafe-inline'",
             "img-src 'self' data: https://www.torinoil.com https://www.itpa.org.il https://ibt-seven.vercel.app",
             "font-src 'self' https://fonts.gstatic.com",
-            "connect-src 'self'",
+            "connect-src 'self' https://api.web3forms.com",
             "frame-ancestors 'none'",
           ].join('; '),
         },

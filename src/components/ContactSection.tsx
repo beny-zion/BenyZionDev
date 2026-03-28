@@ -10,12 +10,36 @@ export default function ContactSection() {
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
 
-  const handleSend = () => {
-    if (!name || !message) return;
-    const mailtoUrl = `mailto:b4123190@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}`;
-    window.open(mailtoUrl, '_blank');
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
+  const [sending, setSending] = useState(false);
+
+  const handleSend = async () => {
+    if (!name || !message || sending) return;
+    setSending(true);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
+          name,
+          message,
+          from_email: 'portfolio-contact@beny-zion.dev',
+          subject: `Portfolio Contact from ${name}`,
+        }),
+      });
+      if (res.ok) {
+        setSent(true);
+        setName('');
+        setMessage('');
+        setTimeout(() => setSent(false), 3000);
+      }
+    } catch {
+      // fallback to mailto
+      const mailtoUrl = `mailto:b4123190@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}`;
+      window.open(mailtoUrl, '_blank');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -117,7 +141,7 @@ export default function ContactSection() {
                     onClick={handleSend}
                     className="px-5 py-2.5 bg-emerald-600 text-white rounded hover:bg-emerald-500 transition-colors text-sm"
                   >
-                    {sent ? '✓ 200 OK' : `${t.contact.send} →`}
+                    {sent ? '✓ 200 OK' : sending ? '...' : `${t.contact.send} →`}
                   </button>
                 </div>
               </>
